@@ -1,0 +1,17 @@
+{% extends "../base.html" %}
+{% block title %}Analysis{% end %}
+
+{% block js %}
+    <script type="text/javascript" src="{{ static_url('js/analysis.js') }}"></script>
+{% end %}
+
+{% block content %}
+    <div class="content">
+        <h2>Analysis</h2>
+        <div class='text-right'>
+            <a href="/">Back To Menu</a>
+        </div>
+
+        <div id="cacheList"></div>
+    </div>
+{% end %}

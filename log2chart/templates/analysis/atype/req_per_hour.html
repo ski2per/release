@@ -1,0 +1,38 @@
+<script type="text/javascript">
+    $('#container').highcharts({
+        credits: {
+            enabled: false
+        },
+        title: {
+            text: 'Request Per Hour',
+        },
+        subtitle: {
+            text: '{{filename}}',
+            style:  { "color": "#FF0000" }
+        },
+        xAxis: {
+            type:'category',
+            title: {
+                text:'Hour'
+            }
+        },
+        yAxis: {
+            title: {
+                text: ''
+            },
+        },
+        tooltip: {
+
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series:[{
+            name:'Requests',
+            data:{% raw data %}
+            }]
+    });
+</script>

@@ -1,0 +1,36 @@
+{% if rawList %}
+    <div class="logTable">
+        <table class="table table-hover">
+        {% for f in rawList %}
+            <tr>
+                <td><input type="checkbox" value="{{ f }}"/></td>
+                <td>{{ f }}</td>
+                <td>
+                    <a href="/delete/log/{{ f }}"><span title="Delete this file" class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                </td>
+            </tr>
+        {% end %}
+        </table>
+    </div>
+
+    <div id="info"></div>
+
+
+    <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle" type="button"
+        id="extractBTN" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Extract data from
+            <span class="caret"></span>
+        </button>
+            <ul id="extractMenu" class="dropdown-menu" aria-labelledby="extractBTN">
+                <li><a id="nginx" href="#">Nginx Access Log</a></li>
+                <li><a id="apache" href="#">Apache Access log(TBC)</a></li>
+            </ul>
+    </div>
+
+{% else %}
+    <div class="alert alert-danger">
+        Upload Log File For Analyzing
+    </div>
+{% end %}
+

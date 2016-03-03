@@ -1,0 +1,7 @@
+10.150.40.100|22|admin|adminp4sswOrd|cq-j20|"nginx: master"
+10.150.40.101|22|admin|adminp4sswOrd|cq-j20|"nginx: master"
+10.150.40.102|22133|admin|adminp4sswOrd|cq-j20|"tomcat-img","tomcat.node00","tomcat.node01"
+10.150.40.103|22133|admin|adminp4sswOrd|cq-j20|"tomcat6-static_app","tomcat.node02","tomcat.node03"
+10.150.40.104|22133|admin|adminp4sswOrd|cq-j20|"tomcat-cmsArticle","tomcat-notify","tomcat-solr","tomcat6-cms","tomcat-mgr"
+10.150.40.105|22154|admin|adminp4sswOrd|cq-j20|"mysql.sock"
+10.150.40.106|22154|admin|adminp4sswOrd|cq-j20|"mysql.sock"

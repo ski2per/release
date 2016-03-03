@@ -1,0 +1,17 @@
+1. Required Module(s)
+    paramiko
+
+
+2. File Structure
+    warpgate.py     - Core file
+    controller      - Main program
+    conf            - Store hosts' information
+    
+    In "conf", each line has the format of:
+    IP|SSH_Port|Username|Password|RemotePath
+    
+    The empty line and line with leading "#" are ignored.
+
+
+3. Python version
+    2.7+

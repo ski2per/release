@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Chart Renderer</title>
+        <script type="text/javascript" src="{{ static_url('js/jquery-1.11.3.min.js') }}"></script>
+        <script type="text/javascript" src="{{ static_url('highcharts/highcharts.js') }}"></script>
+        <script type="text/javascript" src="{{ static_url('bootstrap-3.3.6/js/bootstrap.min.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ static_url('bootstrap-3.3.6/css/bootstrap.min.css') }}">
+        <style type="text/css">
+            #back_link {
+                margin-right: 30px;
+            }
+        </style>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var url = window.location.href;
+                var arr = url.split("/");
+                var len = arr.length;
+                var aType,filename,x,ajaxURL;
+
+                aType = arr[len-2];
+                filename = arr[len-1];
+                ajaxURL = "/chart/"+aType+"/"+filename;
+
+                $.ajax({
+                    url: ajaxURL, 
+                    type: "GET",
+                    dataType: "html",
+                    beforeSend: function() {
+                        $("#container").html('<span style="font-family:Georgia;font-size:20px;color:#1B58B8;">Processing data...</span>');
+                    },
+
+                    success: function(chart) {
+                        $("#container").html(chart);
+                    },
+
+                    error: function() {
+                        //alert("Error :/");
+                        //location.href = "/analyzer_index";
+                    }
+                });//ajax
+            });
+        </script>
+    </head>
+<body>
+    <div id="container" style="min-width:400px; max-width:800px; min-height:500px; margin:0 auto;"></div>
+    <div id="back_link" class='text-right'>
+        <a href="/analysis">Back</a>
+    </div>
+
+</body>
+</html>
+

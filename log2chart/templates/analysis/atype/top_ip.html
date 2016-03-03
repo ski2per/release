@@ -1,0 +1,54 @@
+<script type="text/javascript">
+    $('#container').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Top 10 Access IP'
+        },
+        subtitle: {
+            text: '{{filename}}',
+            style:  { "color": "#FF0000" }
+        },
+        xAxis: {
+            type : 'category',
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: null,
+            labels: {
+                overflow: 'justify'
+            }
+        },
+      
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'bottom',
+            x: -30,
+            y: -50,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [
+            {
+            name:'Access Number',
+            data:{% raw data %}
+            }]
+    });
+</script>

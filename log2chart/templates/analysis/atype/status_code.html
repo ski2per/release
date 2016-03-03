@@ -1,0 +1,40 @@
+<script type="text/javascript">
+    $('#container').highcharts({
+        credits:{
+            enabled:false
+        },
+        chart: {
+            type:'pie'
+        },
+        title: {
+            text: 'HTTP Status Code'
+        },
+        subtitle: {
+            text: '{{filename}}',
+            style:  { "color": "#FF0000" }
+        },
+        plotOptions:{
+            pie:{
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels:{
+                    enabled:true,
+                    format: '{point.name}: <span style="color:red;">{point.percentage:.1f}%</span>'
+                },
+                showInLegend:true
+            }
+        },
+        series:[{
+            name:'Total',
+            colorByPoint:true,
+            data:{% raw data %}
+            /*
+            data:[
+                {name:"item1",y:10},
+                {name:"item2",y:25},
+                {name:"item3",y:28}
+            ]
+            */
+            }]
+    });//highcharts
+</script>

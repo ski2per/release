@@ -1,0 +1,39 @@
+{% if cacheList %}
+    <div class="cacheTable">
+        <table class="table table-hover">
+        {% for f in cacheList %}
+            <tr>
+                <td><input type="checkbox" value="{{ f }}"></input></td>
+                <td>{{ f }}</td>
+                <td>
+                    <a href="/delete/{{cacheType}}/{{f}}"><span title="Delete this data" class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                </td>
+            </tr>
+        {% end %}
+        </table>
+
+
+    {% if cacheType == 'analysis' %}
+    <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle" type="button"
+        id="analysisBTN" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Analyzing for
+            <span class="caret"></span>
+        </button>
+            <ul id="analysisMenu" class="dropdown-menu" aria-labelledby="analysisBTN">
+                <li><a id='req_per_hour' href="#">Request Per Hour</a></li>
+                <li><a id='single_ip_per_hour' href="#">Single IP Per Hour</a></li>
+                <li><a id='req_method' href="#">Request Method</a></li>
+                <li><a id='status_code' href="#">Status Code</a></li>
+                <li><a id='top_ip' href="#">Top 10 Access IP</a></li>
+            </ul>
+    </div>
+    {% end %}
+
+    </div>
+{% else %}
+    <div class="alert alert-danger">
+        No data :/
+    </div>
+{% end %}
+
