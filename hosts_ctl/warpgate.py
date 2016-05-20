@@ -9,13 +9,13 @@
 import os.path
 import paramiko
 
-PINK        = '\033[95m'
-BLUE        = '\033[94m'
-GREEN       = '\033[92m'
-YELLOW      = '\033[93m'
-RED         = '\033[91m'
-UNDERLINE   = '\033[4m'
-ENDC        = '\033[0m'
+PINK = '\033[95m'
+BLUE = '\033[94m'
+GREEN = '\033[92m'
+YELLOW = '\033[93m'
+RED = '\033[91m'
+UNDERLINE = '\033[4m'
+ENDC = '\033[0m'
 
 
 def summon(login, cmd, echo=1):
@@ -23,10 +23,10 @@ def summon(login, cmd, echo=1):
     # cmd           - command to execute on remote host
     # echo          - display info or not
 
-    ip      = login[0]
-    port    = login[1]
-    usr     = login[2]
-    psd     = login[3]
+    ip = login[0]
+    port = login[1]
+    usr = login[2]
+    psd = login[3]
 
     warpgate = paramiko.SSHClient()
     warpgate.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -39,12 +39,13 @@ def summon(login, cmd, echo=1):
     if echo:
         print('{0}{1:<15}{2}: Summon Completed'.format(GREEN, ip, ENDC))
     for i in stdout.readlines():
-            print(i.rstrip('\n'));
+        print(i.rstrip('\n'))
     for i in stderr.readlines():
-            print(i.rstrip('\n'));
+        print(i.rstrip('\n'))
 
     warpgate.close()
     return 0
+
 
 def teleport(login, local_file, remote_path, echo=1):
     # login         - list [ip,port,user,password]
@@ -61,7 +62,6 @@ def teleport(login, local_file, remote_path, echo=1):
     # local file is plain file, use "_wormhole()" to transport
     else:
         _wormhole(login, local_file, remote_path, echo)
-        
 
 
 def _scan(arg, dirname, files):
@@ -97,11 +97,11 @@ def _wormhole(login, local_file, remote_path, echo):
     # remote_path   - remote path to store local file
     # echo          - echo info or not
 
-    ip      = login[0]
-    port    = login[1]
-    usr     = login[2]
-    psd     = login[3]
-    
+    ip = login[0]
+    port = login[1]
+    usr = login[2]
+    psd = login[3]
+
     LOCAL_FILE_NAME = os.path.basename(local_file)
     REMOTE_PATH = os.path.abspath(remote_path)
     REMOTE_FILE = os.path.join(REMOTE_PATH, LOCAL_FILE_NAME)
@@ -111,7 +111,7 @@ def _wormhole(login, local_file, remote_path, echo):
         transporter.connect(username=usr, password=psd)
     except:
         return ip
-    
+
     warpgate = paramiko.SFTPClient.from_transport(transporter)
     ### upload dir
     if os.path.isdir(local_file):
@@ -132,6 +132,5 @@ def _wormhole(login, local_file, remote_path, echo):
     # clean up
     warpgate.close()
     transporter.close()
-    
-    return 0
 
+    return 0
