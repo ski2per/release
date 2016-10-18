@@ -24,6 +24,18 @@ class SSHer(object):
         self.echo = echo
 
     def execute(self, command, **kwargs):
+        """
+        Execute a command on remote host
+
+        :param command: Command, like "ps -ef"
+        :param kwargs: dict type, {
+                                    "IP": "192.168.1.1",
+                                    "PORT": 22,
+                                    "USERNAME": "ted",
+                                    "PASSWORD": "hello"
+                                }
+        :return: None
+        """
         ip = kwargs["IP"]
         port = int(kwargs["PORT"])
         username = kwargs["USERNAME"]
@@ -46,37 +58,57 @@ class SSHer(object):
         except socket.error as err:
             self.__colored_print(ip, str(err), msg_type="error")
 
-    @staticmethod
-    def transport(local, remote, **kwargs):
+    def send(self, local, remote, **kwargs):
         ip = kwargs["IP"]
         port = int(kwargs["PORT"])
         username = kwargs["USERNAME"]
         password = kwargs["PASSWORD"]
-        print(kwargs)
 
         transport = paramiko.transport.Transport((ip, port))
         try:
             transport.connect(username=username, password=password)
-            print(transport)
             sftp = paramiko.SFTPClient.from_transport(transport)
-            print(sftp.get_channel())
 
-            local_path = os.path.abspath(local)
-            if os.path.exists(local_path):
-                if os.path.isdir(local_path):
-                    pass
-                else:
-                    sftp.put(local_path, remote)
+            # Check existence of remote
+            sftp.stat(remote)
+
+            # local IS A DIRECTORY
+            if os.path.isdir(local):
+                parent_dir = os.path.dirname(local)
+                os.chdir(parent_dir)
+                target_dir = os.path.basename(local)
+
+                for dirpath, dirnames, filenames in os.walk(target_dir):
+                    remote_dir = os.path.join(remote, dirpath)
+                    try:
+                        sftp.mkdir(remote_dir)
+                        self.__colored_print(ip, msg="success - {}".format(remote_dir))
+                    except IOError:
+                        self.__colored_print(ip, msg="{} exists".format(remote_dir), msg_type="info")
+
+                    for filename in filenames:
+                        local_file = os.path.join(dirpath, filename)
+                        remote_file = os.path.join(remote, local_file)
+                        sftp.put(local_file, remote_file)
+                        self.__colored_print(ip, msg="success - {}".format(remote_file))
+
+            # local IS A PLAIN FILE
             else:
-                print("not exists")
+                filename = os.path.basename(local)
+                remote_file = os.path.join(remote, filename)
+                sftp.put(local, remote_file)
+                self.__colored_print(ip, msg="success - {}".format(remote_file))
 
         except paramiko.SSHException as err:
-            print("shit")
             print(err)
+        except IOError:
+            print("remote not exist")
 
+    def __transport(self):
+        pass
 
     @staticmethod
-    def __colored_print(ip, msg="SUCCESS", msg_type="success"):
+    def __colored_print(ip, msg="success", msg_type="success"):
         PINK = '\033[95m'
         BLUE = '\033[94m'
         GREEN = '\033[92m'
@@ -88,104 +120,18 @@ class SSHer(object):
         TPL = "{0}{1:<15}{2}: [ {3} ]"
 
         if msg_type == "error":
-            print(TPL.format(RED, ip, ENDC, msg.upper()))
+            print(TPL.format(RED, ip, ENDC, msg))
         elif msg_type == "auth":
-            print(TPL.format(YELLOW, ip, ENDC, msg.upper()))
+            print(TPL.format(YELLOW, ip, ENDC, msg))
+        elif msg_type == "info":
+            print(TPL.format(BLUE, ip, ENDC, msg))
         else:
             print(TPL.format(GREEN, ip, ENDC, msg))
 
 
-def teleport(login, local_file, remote_path, echo=1):
-    # login         - list [ip,port,user,password]
-    # local_file    - absolute path of local file
-    # remote_path   - remote path to store local file
-    # echo          - info switch
-
-    # local file is directory, use "os.path.walk()" to scan
-    if os.path.isdir(local_file):
-        local_base_path = os.path.dirname(local_file)
-        remote_path = os.path.abspath(remote_path)
-        os.path.walk(local_file, _scan, [login, local_base_path, remote_path, echo])
-
-    # local file is plain file, use "_wormhole()" to transport
-    else:
-        _wormhole(login, local_file, remote_path, echo)
-
-
-def _scan(arg, dirname, files):
-    # arg       - [login, local_base_path, remote_path, echo]
-    # dirname   - current directory name
-    # files     - file list in "dirname"
-
-    login = arg[0]
-    LOCAL_BASE_PATH = arg[1] + '/'
-    REMOTE_BASE_PATH = arg[2]
-    echo = arg[3]
-
-    remote_file = os.path.join(REMOTE_BASE_PATH, dirname.replace(LOCAL_BASE_PATH, ""))
-    remote_path = os.path.dirname(remote_file)
-
-    if _wormhole(login, dirname, remote_path, echo):
-        print('{0}{1:<15}{2}: {3:<16} - {4}'.format(YELLOW, login[0], ENDC, "Dir Exists", dirname))
-        pass
-
-    for f in files:
-        local_file = os.path.join(dirname, f)
-        if os.path.isdir(local_file):
-            continue
-        remote_path = os.path.join(REMOTE_BASE_PATH, dirname.replace(LOCAL_BASE_PATH, ""))
-        if _wormhole(login, local_file, remote_path, echo):
-            print('{0}{1:<15}{2}: {3:<16} - {4}'.format(FAIL, login[0], ENDC, "Upload Failed", local_file))
-            pass
-
-
-def _wormhole(login, local_file, remote_path, echo):
-    # login         - list [ip,port,user,password]
-    # local_file    - absolute path of local file
-    # remote_path   - remote path to store local file
-    # echo          - echo info or not
-
-    ip = login[0]
-    port = login[1]
-    usr = login[2]
-    psd = login[3]
-
-    LOCAL_FILE_NAME = os.path.basename(local_file)
-    REMOTE_PATH = os.path.abspath(remote_path)
-    REMOTE_FILE = os.path.join(REMOTE_PATH, LOCAL_FILE_NAME)
-
-    try:
-        transport = paramiko.transport.Transport((ip, int(port)))
-        transport.connect(username=usr, password=psd)
-    except:
-        return ip
-
-    warpgate = paramiko.SFTPClient.from_transport(transport)
-    ### upload dir
-    if os.path.isdir(local_file):
-        try:
-            warpgate.mkdir(REMOTE_FILE)
-        except:
-            return ip
-    ### upload file
-    else:
-        try:
-            warpgate.put(local_file, REMOTE_FILE)
-        except:
-            return ip
-
-    if echo:
-        print('{0}{1:<15}{2}: {3:<16} - {4}'.format(GREEN, ip, ENDC, "Upload Completed", REMOTE_FILE))
-
-    # clean up
-    warpgate.close()
-    transporter.close()
-
-    return 0
-
-
 if __name__ == "__main__":
 
+    # This data will be read from configuration
     data = [
         {
             "IP": "192.168.86.86",
@@ -194,13 +140,19 @@ if __name__ == "__main__":
             "PASSWORD": "hello"
         },
         {
-            "IP": "19.168.86.86",
+            "IP": "10.0.0.107",
             "PORT": "22",
             "USERNAME": "root",
             "PASSWORD": "hello"
         },
     ]
 
-    ssh = SSHer()
-    # ssh.execute("echo 'shit'", **data[0])
-    ssh.transport("conf", "/tmp", **data[0])
+    target = "/home/ted/PycharmProjects/release/excel_faker/template.xls"
+    # Change path to absolute path
+    local_abs_path = os.path.abspath(target)
+    if os.path.exists(local_abs_path):
+        ssh = SSHer()
+        # ssh.execute("cat /proc/version", **data[1])
+        ssh.send(local_abs_path, "/tmp", **data[1])
+    else:
+        print("not exit")

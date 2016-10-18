@@ -1,17 +1,25 @@
 import os
+import sys
 import os.path
 import paramiko
 
-
-transport = paramiko.transport.Transport(("192.168.86.86", 22))
-
+transport = paramiko.transport.Transport(("10.0.0.107", 22))
 transport.connect(username="root", password="hello")
-print(transport.get_username())
-print(transport.getpeername())
+sftp = paramiko.SFTPClient.from_transport(transport)
+sftp.mkdir("/tmp/a/shit")
 
 
-# sftp = paramiko.SFTPClient.from_transport(transport)
-sftp = transport.open_sftp_client()
-print(sftp)
 
-sftp.put("/Users/Ted/PycharmProjects/release/hosts_ctl/README", "/tmp/")
+# remote = "/tmp"
+# target = "/home/ted/PycharmProjects/release"
+# dir = os.path.dirname(target)
+# os.chdir(dir)
+# tgt = os.path.basename(target)
+#
+# for dirpath, dirnames, filenames in os.walk(tgt):
+#     print(os.getcwd())
+#
+#     print(dirpath)
+#     print(dirnames)
+#     print(filenames)
+#     print("-------------------")
