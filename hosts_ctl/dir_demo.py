@@ -2,11 +2,14 @@ import os
 import sys
 import os.path
 import paramiko
+import ConfigParser
 
-transport = paramiko.transport.Transport(("10.0.0.107", 22))
-transport.connect(username="root", password="hello")
-sftp = paramiko.SFTPClient.from_transport(transport)
-sftp.mkdir("/tmp/a/shit")
+print "hello"
+
+# transport = paramiko.transport.Transport(("10.0.0.107", 22))
+# transport.connect(username="root", password="hello")
+# sftp = paramiko.SFTPClient.from_transport(transport)
+# sftp.mkdir("/tmp/a/shit")
 
 
 

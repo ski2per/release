@@ -109,24 +109,24 @@ class SSHer(object):
 
     @staticmethod
     def __colored_print(ip, msg="success", msg_type="success"):
-        PINK = '\033[95m'
-        BLUE = '\033[94m'
-        GREEN = '\033[92m'
-        YELLOW = '\033[93m'
-        RED = '\033[91m'
-        UNDERLINE = '\033[4m'
-        ENDC = '\033[0m'
+        pink = '\033[95m'
+        blue = '\033[94m'
+        green = '\033[92m'
+        yellow = '\033[93m'
+        red = '\033[91m'
+        underline = '\033[4m'
+        endc = '\033[0m'
 
         TPL = "{0}{1:<15}{2}: [ {3} ]"
 
         if msg_type == "error":
-            print(TPL.format(RED, ip, ENDC, msg))
+            print(TPL.format(red, ip, endc, msg))
         elif msg_type == "auth":
-            print(TPL.format(YELLOW, ip, ENDC, msg))
+            print(TPL.format(yellow, ip, endc, msg))
         elif msg_type == "info":
-            print(TPL.format(BLUE, ip, ENDC, msg))
+            print(TPL.format(blue, ip, endc, msg))
         else:
-            print(TPL.format(GREEN, ip, ENDC, msg))
+            print(TPL.format(green, ip, endc, msg))
 
 
 if __name__ == "__main__":
@@ -147,12 +147,12 @@ if __name__ == "__main__":
         },
     ]
 
-    target = "/home/ted/PycharmProjects/release/excel_faker/template.xls"
+    target = "/Users/Ted/PycharmProjects/release/cl1024"
     # Change path to absolute path
     local_abs_path = os.path.abspath(target)
     if os.path.exists(local_abs_path):
         ssh = SSHer()
         # ssh.execute("cat /proc/version", **data[1])
-        ssh.send(local_abs_path, "/tmp", **data[1])
+        ssh.send(local_abs_path, "/tmp", **data[0])
     else:
-        print("not exit")
+        print("local file does not exit")
