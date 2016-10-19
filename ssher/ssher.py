@@ -1,29 +1,61 @@
 """
 Author           Ted
-DESCRIPTION      Transport file to or execute
-                 command on remote hosts on remote
+DESCRIPTION      Execute command on or
+                 transport file to remote hosts
                  hosts
 VERSION          v3.0
 UPDATE           2016/10/18
 DEV PYTHON VER   2.7
 """
-
+import re
+import os
+import sys
+import getopt
 import socket
 import os.path
 import paramiko
 
 
 class SSHer(object):
+    CONFIG_FILE = "host.conf"
     DEFAULT_PORT = 22
     CONNECTION_TIMEOUT = 5
 
-    def __init__(self, echo=1):
+    def __init__(self):
+        # Read and parse configuration
+        self.hosts = []
+        self._parse_config()
+
         self._ssh = paramiko.SSHClient()
         self._ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-        self.echo = echo
+    def execute(self, mode, item):
+        if mode == "command":
+            for host in self.hosts:
+                self._command(item, **host)
 
-    def execute(self, command, **kwargs):
+        # mode == "transport"
+        else:
+            for host in self.hosts:
+                self._transport(item, **host)
+
+    def _parse_config(self):
+        keys = ["IP", "PORT", "USERNAME", "PASSWORD", "REMOTE"]
+        try:
+            with open(self.CONFIG_FILE, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith("#") or re.match('^$', line):
+                        continue
+
+                    data = line.split('|')
+                    host = dict(zip(keys, data))
+                    self.hosts.append(host)
+
+        except IOError:
+            sys.exit("{} is not found".format(self.CONFIG_FILE))
+
+    def _command(self, command, **kwargs):
         """
         Execute a command on remote host
 
@@ -45,31 +77,42 @@ class SSHer(object):
             self._ssh.connect(ip, port, username, password, timeout=self.CONNECTION_TIMEOUT)
             stdin, stdout, stderr = self._ssh.exec_command(command)
 
-            if self.echo:
-                self.__colored_print(ip)
-
+            self._colored_print(ip)
             for line in stdout:
                 print(line.rstrip())
             for line in stderr:
                 print(line.rstrip())
 
         except paramiko.SSHException as err:
-            self.__colored_print(ip, str(err), msg_type="auth")
+            self._colored_print(ip, msg_type="error", msg=str(err))
         except socket.error as err:
-            self.__colored_print(ip, str(err), msg_type="error")
+            self._colored_print(ip, msg_type="error", msg=str(err))
 
-    def send(self, local, remote, **kwargs):
+    def _transport(self, local, **kwargs):
+        """
+
+        :param local: local file or directory
+        :param kwargs: {
+                            "IP": "192.168.1.1",
+                            "PORT": 22,
+                            "USERNAME": "ted",
+                            "PASSWORD": "hello"
+                            "REMOTE": "/tmp"
+                       }
+        :return:
+        """
         ip = kwargs["IP"]
         port = int(kwargs["PORT"])
         username = kwargs["USERNAME"]
         password = kwargs["PASSWORD"]
+        remote = kwargs["REMOTE"]
 
-        transport = paramiko.transport.Transport((ip, port))
         try:
+            transport = paramiko.transport.Transport((ip, port))
             transport.connect(username=username, password=password)
             sftp = paramiko.SFTPClient.from_transport(transport)
 
-            # Check existence of remote
+            # Check existence of remote, or raise a exception
             sftp.stat(remote)
 
             # local IS A DIRECTORY
@@ -82,33 +125,30 @@ class SSHer(object):
                     remote_dir = os.path.join(remote, dirpath)
                     try:
                         sftp.mkdir(remote_dir)
-                        self.__colored_print(ip, msg="success - {}".format(remote_dir))
+                        self._colored_print(ip, msg_type="success", msg=remote_dir)
                     except IOError:
-                        self.__colored_print(ip, msg="{} exists".format(remote_dir), msg_type="info")
+                        self._colored_print(ip, msg_type="", msg=remote_dir)
 
                     for filename in filenames:
                         local_file = os.path.join(dirpath, filename)
                         remote_file = os.path.join(remote, local_file)
                         sftp.put(local_file, remote_file)
-                        self.__colored_print(ip, msg="success - {}".format(remote_file))
+                        self._colored_print(ip, msg_type="success", msg=remote_file)
 
             # local IS A PLAIN FILE
             else:
                 filename = os.path.basename(local)
                 remote_file = os.path.join(remote, filename)
                 sftp.put(local, remote_file)
-                self.__colored_print(ip, msg="success - {}".format(remote_file))
+                self._colored_print(ip, msg=remote_file)
 
         except paramiko.SSHException as err:
-            print(err)
+            self._colored_print(ip, msg_type="error", msg=str(err))
         except IOError:
-            print("remote not exist")
-
-    def __transport(self):
-        pass
+            self._colored_print(ip, msg_type="error", msg="remote path does not exist")
 
     @staticmethod
-    def __colored_print(ip, msg="success", msg_type="success"):
+    def _colored_print(ip, msg_type="success", msg=""):
         pink = '\033[95m'
         blue = '\033[94m'
         green = '\033[92m'
@@ -117,42 +157,42 @@ class SSHer(object):
         underline = '\033[4m'
         endc = '\033[0m'
 
-        TPL = "{0}{1:<15}{2}: [ {3} ]"
+        template = "{0}{1:<15}{2} [ {3} ] {4} "
 
         if msg_type == "error":
-            print(TPL.format(red, ip, endc, msg))
-        elif msg_type == "auth":
-            print(TPL.format(yellow, ip, endc, msg))
-        elif msg_type == "info":
-            print(TPL.format(blue, ip, endc, msg))
+            print(template.format(red, ip, endc, "ERROR", msg))
         else:
-            print(TPL.format(green, ip, endc, msg))
+            print(template.format(green, ip, endc, "SUCCESS", msg))
 
 
 if __name__ == "__main__":
 
-    # This data will be read from configuration
-    data = [
-        {
-            "IP": "192.168.86.86",
-            "PORT": "22",
-            "USERNAME": "root",
-            "PASSWORD": "hello"
-        },
-        {
-            "IP": "10.0.0.107",
-            "PORT": "22",
-            "USERNAME": "root",
-            "PASSWORD": "hello"
-        },
-    ]
+    mode = ""
+    item = ""
 
-    target = "/Users/Ted/PycharmProjects/release/cl1024"
-    # Change path to absolute path
-    local_abs_path = os.path.abspath(target)
-    if os.path.exists(local_abs_path):
-        ssh = SSHer()
-        # ssh.execute("cat /proc/version", **data[1])
-        ssh.send(local_abs_path, "/tmp", **data[0])
-    else:
-        print("local file does not exit")
+    usage = """
+    script -c "command"
+    script -t path2file
+    script -h
+    """
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "c:t:h")
+        if opts:
+            for o, a in opts:
+                if o == "-c":
+                    mode = "command"
+                    item = a
+                elif o == "-t":
+                    mode = "transport"
+                    item = a
+                else:
+                    print(usage)
+
+            ssher = SSHer()
+            ssher.execute(mode, item)
+        else:
+            print(usage)
+
+    except getopt.GetoptError:
+        print(usage)
+
