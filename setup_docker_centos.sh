@@ -5,8 +5,7 @@
 ###### VERSION          v1.0
 ###### UPDATE           2018/02/26
 
-# THIS SCRIPT IS TESTED ON CENTOS 7.4
-# IT CAN BE USED TO SETUP THE ENVIRONMENT FOR DEVELOPERS
+# TESTED ON CENTOS 7.4
 
 # Prerequisites
 setenforce 0

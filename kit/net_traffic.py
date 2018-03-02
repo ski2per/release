@@ -56,8 +56,8 @@ if __name__ == "__main__":
     time.sleep(1)
     traffic1 =  sample()
     
-    print('{:<20}{:<20}{:<20}'.format("[NIC]","[RX]","[TX]"))
-    print('{:=^60}'.format(""))
+    print('{:<20}{:<20}{:<20}'.format("NIC","RX","TX"))
+    print('{:-^60}'.format(""))
 
     for k in sorted(traffic0.keys()):
         rx = int(traffic1[k][0]) - int(traffic0[k][0])
