@@ -40,3 +40,5 @@ if [[ $DISABLE_FW == "yes" ]];then
     systemctl disable firewalld
 fi
 
+###### Set hostname ######
+hostnamectl set-hostname $HOSTNAME
