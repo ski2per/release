@@ -1,12 +1,17 @@
 """
-Author           Ted
-DESCRIPTION      Execute command on or
-                 transport file to remote hosts
-                 hosts
-VERSION          v3.0
-UPDATE           2016/10/18
-DEV PYTHON VER   2.7
+###### CREATOR          Ted
+###### DESCRIPTION      SSH tool for executing command and transporting file
+                        [TBD]
+###### VERSION          v1.0
+###### UPDATE           2016/01/21
+
+Configuration File Format:
+
+192.168.86.86|22|root|hello|/tmp
+#192.168.86.86|22|admin|admin|/tmp
+10.0.0.111|22|admin|admin|/home/ted
 """
+
 import re
 import os
 import sys
@@ -195,4 +200,3 @@ if __name__ == "__main__":
 
     except getopt.GetoptError:
         print(usage)
-
