@@ -27,7 +27,9 @@ systemctl restart network
 
 ###### Install some RPMs ######
 echo "Install net-tools sysstat lsof..."
-yum -y install net-tools sysstat lsof 
+yum -y install net-tools sysstat lsof ntp
+systemctl enable ntpd
+systemctl start ntpd
 
 ###### Turn off SELinux ######
 echo "Disable SELinux"

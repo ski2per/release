@@ -22,5 +22,10 @@ DOCKER_REPO_URL=https://download.docker.com/linux/centos/docker-ce.repo
 yum-config-manager --add-repo $DOCKER_REPO_URL
 # Install Docker
 yum -y install docker-ce
-systemctl enable docker
-systemctl start docker
+
+if [[ $? -eq 0 ]];then
+    systemctl enable docker
+    systemctl start docker
+else
+    echo "Installation of docker-ce failed, check manually"
+fi
