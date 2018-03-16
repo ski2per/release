@@ -1,10 +1,12 @@
 #!/usr/bin/env python
+"""
 ###### AUTHOR           Skipper
 ###### DESCRIPTION      Return network traffics (RX/TX) of all network
 ######                  interface (Use it with "watch" together)
 ###### VERSION          v1.4
 ###### UPDATE           2015/09/15
 ###### PYTHON VERSION   2,3
+"""
 
 import time
 import re
