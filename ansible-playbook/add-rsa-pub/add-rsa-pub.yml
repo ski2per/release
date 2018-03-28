@@ -1,0 +1,9 @@
+---
+- hosts: host-group-name
+  tasks:
+  - name: Add id_rsa.pub
+    authorized_key:
+      user: "{{ ansible_user }}"
+      state: present
+      key: "{{ lookup('file', lookup('env', 'HOME')+'/.ssh/id_rsa.pub') }}"
+

@@ -1,0 +1,29 @@
+---
+- hosts: jenkins-host
+  remote_user: root
+  tasks:
+  #- name: copy jenkins.repo
+  #  copy:
+  #    src: /root/ansible-playbook/install-jenkins-centos7/jenkins.repo
+  #    dest: /etc/yum.repos.d/jenkins.repo
+  - name: Add Jenkins repository
+    yum_repository:
+      name: jenkins
+      description: Jenkins Stable
+      baseurl: http://pkg.jenkins.io/redhat-stable
+      gpgcheck: no
+
+  - name: Install JDK
+    yum:
+      name: java
+      state: latest
+
+  - name: Install Jenkins
+    yum:
+      name: jenkins
+      state: latest
+
+  - name: Enable Jenkins service
+    service:
+      name: jenkins
+      state: started
