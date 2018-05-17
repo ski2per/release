@@ -2,13 +2,13 @@
 
 ###### FARMER        Ted
 ###### DESCRIPTION   Basic init script for centos 7
-###### VERSION       v1.0
+###### VERSION       v1.1
 ###### UPDATE        2018/03/02
 
 HOSTNAME="jenkins"
 DISABLE_FW="yes"
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 ###### Bring up network(DHCP) ######
 
