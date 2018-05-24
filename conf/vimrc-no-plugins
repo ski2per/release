@@ -94,7 +94,7 @@ if has("gui_running")
 	set guioptions=maAce
     "Linux
 	"set guifont=Monospace\ 11
-    "Windows
+    "Windows | mac
 	"set guifont=Monospace:h11
     "
     set guifont=DejaVu\ Sans\ Mono\ 11

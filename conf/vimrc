@@ -1,7 +1,7 @@
 " ###### CREATOR          Ted       
 " ###### DESCRIPTION      Vim configuration for Linux, OSX and Windows
-" ###### VERSION          v1.1
-" ###### UPDATE           2018/03/16
+" ###### VERSION          v1.2
+" ###### UPDATE           2018/5/24
 
 
 " ===================
@@ -136,7 +136,7 @@ if has("gui_running")
 	set guioptions=maAce
     "Linux
 	"set guifont=Monospace\ 11
-    "Windows
+    "Windows, Mac
 	"set guifont=Monospace:h11
     "
     set guifont=DejaVu\ Sans\ Mono\ 11
