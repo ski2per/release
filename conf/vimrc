@@ -1,7 +1,7 @@
 " ###### CREATOR          Ted       
 " ###### DESCRIPTION      Vim configuration for Linux, OSX and Windows
-" ###### VERSION          v1.2
-" ###### UPDATE           2018/5/24
+" ###### VERSION          v1.3
+" ###### UPDATE           2018/5/29
 
 
 " ===================
@@ -42,7 +42,7 @@ Plugin 'easymotion/vim-easymotion'
 "Plugin 'plasticboy/vim-markdown'
 "Plugin 'vim-scripts/taglist.vim'
 "Plugin 'Valloric/YouCompleteMe'
-Plugin 'davidhalter/jedi-vim'
+"Plugin 'davidhalter/jedi-vim'
 call vundle#end()
 " END Vundle plugins
 " ------------------
@@ -146,6 +146,6 @@ if has("gui_running")
     set background=dark
     colorscheme solarized
 
-    "set mousemodel=extend
+    set mousemodel=popup
     highlight Cursor guibg=Green
 endif
