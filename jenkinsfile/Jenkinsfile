@@ -1,0 +1,33 @@
+pipeline {
+  agent any
+  stages {
+    stage('DEPLOY') {
+      parallel {
+        stage('Prepare Caliper') {
+          agent {
+            label 'master'
+          }
+          steps {
+            git(url: 'https://github.com/ski2per/caliper.git', branch: 'master')
+            sh 'ls'
+          }
+        }
+        stage('Setup testbed') {
+          agent {
+            label 'node1'
+          }
+          steps {
+            sh '''echo $TESTBED
+ip addr
+whoami
+pwd
+docker images'''
+          }
+        }
+      }
+    }
+  }
+  parameters {
+    string(name: 'TESTBED', defaultValue: '10.0.0.201', description: 'Enter Testbed IP')
+  }
+}

@@ -1,0 +1,17 @@
+pipeline {
+    agent {
+        docker {
+            image 'python:3.5.1'
+        }
+    }
+    stages {
+        stage('build') {
+            steps {
+                sh 'python --version'
+                sh 'echo "sleep 6s"'
+                sh 'sleep 6'
+            }
+        }
+    }
+    
+}
