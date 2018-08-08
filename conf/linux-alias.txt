@@ -1,0 +1,24 @@
+#! bash
+
+# Ansible
+alias an='ansible'
+alias ap='ansible-playbook'
+alias av='ansible-vault'
+
+# Docker
+alias di='docker images'
+alias dp='docker ps'
+alias dpa='docker ps -a'
+alias dc='docker-compose'
+alias dl='docker logs'
+alias dlf='docker logs -f'
+alias dclean='docker stop $(docker ps -q) || docker rm $(docker ps -aq)'
+
+# Git
+alias gp='git pull'
+alias ga='git add'
+alias gb='git branch'
+alias gbr='git branch -r'
+alias gba='git branch -a'
+alias gc='git commit'
+alias gck='git checkout'
