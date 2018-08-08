@@ -17,6 +17,7 @@ alias dlf='docker logs -f'
 alias dcls='docker stop $(docker ps -q) || docker rm $(docker ps -aq)'
 
 # Git
+alias gs='git status'
 alias gp='git pull'
 alias ga='git add'
 alias gb='git branch'
