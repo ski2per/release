@@ -34,6 +34,10 @@ services:
       hyper:
         aliases:
           - orderer.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == caliper-client1
 
 
   peer0org1:
@@ -66,6 +70,10 @@ services:
       hyper:
         aliases:
           - peer0.org1.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == ci-node0-30
 
   peer1org1:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -96,6 +104,10 @@ services:
       hyper:
         aliases:
           - peer1.org1.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == ci-node0-30
 
   peer0org2:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -126,6 +138,10 @@ services:
       hyper:
         aliases:
           - peer0.org2.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == testbed-fabric-11
 
   peer1org2:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -156,6 +172,10 @@ services:
       hyper:
         aliases:
           - peer1.org2.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == testbed-fabric-11
 
   peer0org3:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -186,6 +206,10 @@ services:
       hyper:
         aliases:
           - peer0.org3.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == testbed-fabric-12
 
   peer1org3:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -216,6 +240,10 @@ services:
       hyper:
         aliases:
           - peer1.org3.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == testbed-fabric-12
 
   peer0org4:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -246,6 +274,10 @@ services:
       hyper:
         aliases:
           - peer0.org4.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == testbed-fabric-13
 
   peer1org4:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -276,3 +308,7 @@ services:
       hyper:
         aliases:
           - peer1.org4.example.com
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == testbed-fabric-13
