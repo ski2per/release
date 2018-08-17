@@ -14,6 +14,7 @@ alias dpa='docker ps -a'
 alias dc='docker-compose'
 alias dl='docker logs'
 alias dlf='docker logs -f'
+alias dn='docker node'
 alias dcls='docker stop $(docker ps -q) || docker rm $(docker ps -aq)'
 
 # Git
