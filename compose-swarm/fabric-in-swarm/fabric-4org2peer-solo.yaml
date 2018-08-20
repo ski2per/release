@@ -73,7 +73,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == ci-node0-30
+          - node.hostname == perf-test-42
 
   peer1org1:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -107,7 +107,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == ci-node0-30
+          - node.hostname == perf-test-42
 
   peer0org2:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -209,7 +209,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == testbed-fabric-12
+          - node.hostname == perf-test-43
 
   peer1org3:
     image: hyperledger/fabric-peer:x86_64-1.1.0
@@ -243,7 +243,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == testbed-fabric-12
+          - node.hostname == perf-test-43
 
   peer0org4:
     image: hyperledger/fabric-peer:x86_64-1.1.0
