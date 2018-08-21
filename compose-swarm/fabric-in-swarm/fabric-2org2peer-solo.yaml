@@ -139,7 +139,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == testbed-fabric-13
+          - node.hostname == testbed-fabric-12
 
   peer1org2:
     image: hyperledger/fabric-peer:x86_64-1.1.0
