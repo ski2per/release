@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 LABEL MAINTAINER="Ted <ski2per@gmail.com>"
 
 COPY sources.list /etc/apt/
-RUN apt-get update && apt-get install -y --no-install-recommends openssh-server iputils-ping dnsutils telnet net-tools sysstat
+RUN apt-get update && apt-get install -y --no-install-recommends openssh-server iproute iputils-ping dnsutils telnet net-tools sysstat
 
 RUN mkdir /var/run/sshd
 
