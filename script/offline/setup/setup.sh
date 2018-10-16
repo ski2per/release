@@ -67,7 +67,10 @@ done
 
 sleep 3
 
+python utils/sshexec.py $ORG1_NODE $SSH_USERNAME $SSH_PASSWORD 'bash /tmp/join.sh'
+sleep 10
 for host in $HOSTS;do
+    echo -e "\e[32mJoin $host\e[0m"
     python utils/sshexec.py $host $SSH_USERNAME $SSH_PASSWORD 'bash /tmp/join.sh'
 done
 
@@ -175,9 +178,6 @@ python utils/sshexec.py $COMPOSER_NODE $SSH_USERNAME $SSH_PASSWORD "composer car
 
 # Start Composer Playground
 python utils/sshexec.py $COMPOSER_NODE $SSH_USERNAME $SSH_PASSWORD "nohup composer-playground &> /dev/null &" bg
-
-
-
 
 
 echo -e "\e[33m  _____   ____  _   _ ______ \e[0m";
