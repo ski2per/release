@@ -54,8 +54,8 @@ python deploy_fabric.py -c configs/4org_kafka -m mappings/node_mapping.json
 # ====================================
 cp -a configs/4org_kafka/crypto-config "$FABIRC_PLATFORM/configs"
 
-echo -e "\e[33mWait 15 seconds for Fabric Network to start \e[0m";
-sleep 10
+echo -e "\e[33mWait for Fabric Network to start, may take a while... \e[0m";
+sleep 60
 
 # Join channel on peer node
 # ====================================
