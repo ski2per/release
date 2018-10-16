@@ -35,6 +35,23 @@ MYSQL_DOCKER_IMG="$PACKAGES/mysql-5.7.tar"
 echo ""
 echo ""
 echo -e "\e[32m========================================================================\e[0m"
+echo -e "\e[32mInstall Docker\e[0m"
+echo -e "\e[32m========================================================================\e[0m"
+
+sudo dpkg -i $DOCKER_DEB_1
+#if [ $? -ne 0 ];then
+#    sudo dpkg -i $DOCKER_DEB_1
+#fi
+
+sudo dpkg -i $DOCKER_DEB_2
+#if [ $? -ne 0 ];then
+#    sudo dpkg -i $DOCKER_DEB_2
+#fi
+sudo apt-get install -f
+
+echo ""
+echo ""
+echo -e "\e[32m========================================================================\e[0m"
 echo -e "\e[32mSetup OpenSSH Server and Enable root login\e[0m"
 echo -e "\e[32m========================================================================\e[0m"
 
@@ -83,21 +100,6 @@ sudo dpkg -i $POSTGRESQL_DEB
 echo "PostgreSQL Installation: $?"
 
 
-echo ""
-echo ""
-echo -e "\e[32m========================================================================\e[0m"
-echo -e "\e[32mInstall Docker\e[0m"
-echo -e "\e[32m========================================================================\e[0m"
-
-sudo dpkg -i $DOCKER_DEB_1
-if [ $? -ne 0 ];then
-    sudo dpkg -i $DOCKER_DEB_1
-fi
-
-sudo dpkg -i $DOCKER_DEB_2
-if [ $? -ne 0 ];then
-    sudo dpkg -i $DOCKER_DEB_2
-fi
 
 
 echo ""
