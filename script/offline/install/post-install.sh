@@ -1,9 +1,5 @@
 #!/bin/bash
 
-PACKAGES="packages"
-FABRIC_DOCKER_IMG="$PACKAGES/fabric-1.1.tar"
-MYSQL_DOCKER_IMG="$PACKAGES/mysql-5.7.tar"
-
 docker version
 echo ""
 docker-compose version
