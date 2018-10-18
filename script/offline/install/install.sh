@@ -176,7 +176,7 @@ function main {
 
     # Print test warning
     colorful_echo "Tested on Ubuntu 16.04 Server and Desktop" "red"
-    # sleep 2
+    sleep 2
 
 
     # Install Docker and Docker Compose
