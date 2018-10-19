@@ -26,8 +26,8 @@ RUN sed -i /etc/ssh/sshd_config \
     mkdir /var/run/sshd
 
 # Change password for root and jenkins
-RUN echo 'jenkins:jenkins' | chpasswd
-RUN echo 'root:P@ssw0rd' | chpasswd
+RUN echo 'jenkins:jenkins' | chpasswd && \
+    echo 'root:P@ssw0rd' | chpasswd
 
 VOLUME "${JENKINS_AGENT_HOME}" "/tmp" "/run" "/var/run"
 WORKDIR "${JENKINS_AGENT_HOME}"
