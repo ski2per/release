@@ -1,0 +1,40 @@
+version: '3'
+
+volumes:
+  influx:
+    driver: local
+  grafana:
+    driver: local
+
+services:
+  influx:
+    hostname: influx
+    image: influxdb
+    volumes:
+      - influx:/var/lib/influxdb
+
+  grafana:
+    hostname: grafana
+    image: grafana/grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED = true
+    ports:
+      - 0.0.0.0:80:3000
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
+    depends_on:
+      - influx
+
+  cadvisor:
+    image: google/cadvisor
+    hostname: cadvisor
+    command: -logtostderr -docker_only -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=influx:8086
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    depends_on:
+      - influx
+
