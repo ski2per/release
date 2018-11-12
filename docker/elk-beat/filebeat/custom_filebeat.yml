@@ -1,0 +1,8 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/nginx/*.log
+
+output.elasticsearch:
+  hosts: ["172.16.100.105:9200"]
