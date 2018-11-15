@@ -1,0 +1,101 @@
+version: '3'
+
+networks:
+    ldap_ha:
+#        external: true
+
+volumes:
+    data0:
+    data1:
+    data2:
+    config0:
+    config1:
+    config2:
+
+services:
+    haproxy:
+        image: haproxy
+        hostname: haproxy
+        volumes:
+            - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
+        ports:
+            - "389:389"
+        networks:
+            ldap_ha:
+        deploy:
+            placement:
+                constraints:
+                    - node.role == manager
+                
+
+    openldap0:
+        image: osixia/openldap
+        hostname: openldap0
+        environment:
+            LDAP_ORGANISATION: xinlian
+            LDAP_DOMAIN: cetcxl.com
+            LDAP_ADMIN_PASSWORD: P@ssw0rd
+            LDAP_REPLICATION: "true"
+            LDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
+
+        volumes:
+            - data0:/var/lib/ldap
+            - config0:/etc/ldap/slapd.d
+        #ports:
+        #    - "389:389"
+        networks:
+            ldap_ha:
+                aliases:
+                    - openldap0
+        deploy:
+            placement:
+                constraints:
+                    - node.hostname == SRV-Bak
+
+    openldap1:
+        image: osixia/openldap
+        hostname: openldap1
+        environment:
+            LDAP_ORGANISATION: xinlian
+            LDAP_DOMAIN: cetcxl.com
+            LDAP_ADMIN_PASSWORD: P@ssw0rd
+            LDAP_REPLICATION: "true"
+            LDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
+
+        volumes:
+            - data1:/var/lib/ldap
+            - config1:/etc/ldap/slapd.d
+        #ports:
+        #    - "1389:389"
+        networks:
+            ldap_ha:
+                aliases:
+                    - openldap1
+        deploy:
+            placement:
+                constraints:
+                    - node.hostname == SRV-Bak
+
+    openldap2:
+        image: osixia/openldap
+        hostname: openldap2
+        environment:
+            LDAP_ORGANISATION: xinlian
+            LDAP_DOMAIN: cetcxl.com
+            LDAP_ADMIN_PASSWORD: P@ssw0rd
+            LDAP_REPLICATION: "true"
+            LDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
+
+        volumes:
+            - data2:/var/lib/ldap
+            - config2:/etc/ldap/slapd.d
+        #ports:
+        #    - "2389:389"
+        networks:
+            ldap_ha:
+                aliases:
+                    - openldap2
+        deploy:
+            placement:
+                constraints:
+                    - node.hostname == SRV-ELK
