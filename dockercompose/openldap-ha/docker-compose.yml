@@ -1,8 +1,7 @@
 version: '3'
 
 networks:
-    ldap_ha:
-#        external: true
+    net:
 
 volumes:
     data0:
@@ -14,18 +13,22 @@ volumes:
 
 services:
     haproxy:
-        image: haproxy
+        # haproxy-ldap image need to be build using Dockerfile
+        # under the same folder:
+        # docker build -t haproxy-ldap .
+        image: haproxy-ldap:v1
         hostname: haproxy
-        volumes:
-            - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
+        #volumes:
+        #    - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
         ports:
             - "389:389"
         networks:
-            ldap_ha:
+            net:
         deploy:
             placement:
                 constraints:
-                    - node.role == manager
+                    #- node.role == manager
+                    - node.hostname == SRV-HTTP
                 
 
     openldap0:
@@ -44,7 +47,7 @@ services:
         #ports:
         #    - "389:389"
         networks:
-            ldap_ha:
+            net:
                 aliases:
                     - openldap0
         deploy:
@@ -68,7 +71,7 @@ services:
         #ports:
         #    - "1389:389"
         networks:
-            ldap_ha:
+            net:
                 aliases:
                     - openldap1
         deploy:
@@ -92,7 +95,7 @@ services:
         #ports:
         #    - "2389:389"
         networks:
-            ldap_ha:
+            net:
                 aliases:
                     - openldap2
         deploy:
