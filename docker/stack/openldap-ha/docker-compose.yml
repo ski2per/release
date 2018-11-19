@@ -15,8 +15,8 @@ services:
     haproxy:
         # haproxy-ldap image need to be build using Dockerfile
         # under the same folder:
-        # docker build -t haproxy-ldap .
-        image: haproxy-ldap:v1
+        # docker build -t haproxy-ldap:v2 .
+        image: haproxy-ldap:v2
         hostname: haproxy
         #volumes:
         #    - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
