@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 volumes:
   esdata:
@@ -6,11 +6,14 @@ volumes:
 
 networks:
   net:
+    driver: overlay
+    attachable: true
 
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
     hostname: elasticsearch
+    privileged: true
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
