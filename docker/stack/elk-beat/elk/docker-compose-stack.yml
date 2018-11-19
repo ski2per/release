@@ -4,6 +4,8 @@ volumes:
   esdata:
     driver: local
 
+networks:
+  net:
 
 services:
   elasticsearch:
@@ -26,7 +28,14 @@ services:
       #- /pan/elk/custom_elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - 9200:9200
-      
+    networks:
+      net:
+        aliases:
+          - elasticsearch
+    deploy:
+      placement:
+        constraints:
+          - node.hostname = SRV-ELK
 
   kibana:
     image: docker.elastic.co/kibana/kibana:6.4.3
@@ -35,4 +44,12 @@ services:
       #- /pan/elk/custom_kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - 5601:5601
+    networks:
+      net:
+        aliases:
+          - kibana
+    deploy:
+      placement:
+        constraints:
+          - node.hostname = SRV-ELK
 
