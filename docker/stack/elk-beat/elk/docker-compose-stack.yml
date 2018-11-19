@@ -35,7 +35,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname = SRV-ELK
+          - node.hostname == SRV-ELK
 
   kibana:
     image: docker.elastic.co/kibana/kibana:6.4.3
@@ -51,5 +51,5 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname = SRV-ELK
+          - node.hostname == SRV-ELK
 
