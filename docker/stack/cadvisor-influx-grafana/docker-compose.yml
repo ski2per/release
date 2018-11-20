@@ -1,19 +1,29 @@
 version: '3'
 
+volumes:
+  influx:
+    driver: local
+  grafana:
+    driver: local
+
 services:
   influx:
     hostname: influx
     image: influxdb
     volumes:
       - influx:/var/lib/influxdb
+    command: influx -execute 'CREATE DATABASE cadvisor'
 
   grafana:
     hostname: grafana
     image: grafana/grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED = true
     ports:
       - 0.0.0.0:80:3000
     volumes:
       - grafana:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
     depends_on:
       - influx
 
@@ -29,8 +39,3 @@ services:
     depends_on:
       - influx
 
-volumes:
-  influx:
-    driver: local
-  grafana:
-    driver: local
