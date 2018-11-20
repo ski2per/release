@@ -4,7 +4,7 @@ services:
   cadvisor:
     image: google/cadvisor
     # hostname is used for distinguishing docker host in Influxdb
-    hostname: ted-vm
+    hostname: abc
     # -storage_driver_db=DATABASE_NAME: Database name in Influxdb(default: cadvisor)
     # -storage_driver_host=IP:PORT: IP and Port of Influxdb 
     command: -logtostderr -docker_only -storage_driver=influxdb -storage_driver_db=cadvisor -storage_driver_host=172.16.66.6:8086
