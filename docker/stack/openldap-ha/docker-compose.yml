@@ -16,10 +16,16 @@ services:
         # haproxy-ldap image need to be build using Dockerfile
         # under the same folder:
         # docker build -t haproxy-ldap:v2 .
-        image: haproxy-ldap:v2
+        
+        #image: haproxy-ldap:v2
+
+        # OR
+        image: haproxy
+        volumes:
+            - "/pan/openldap-ha/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
+        #
+        #
         hostname: haproxy
-        #volumes:
-        #    - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
         ports:
             - "389:389"
         networks:
@@ -29,7 +35,6 @@ services:
                 constraints:
                     #- node.role == manager
                     - node.hostname == SRV-HTTP
-                
 
     openldap0:
         image: osixia/openldap
