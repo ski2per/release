@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.5'
 
 networks:
     net:
@@ -44,9 +44,14 @@ services:
         environment:
             LDAP_ORGANISATION: xinlian
             LDAP_DOMAIN: cetcxl.com
+            LDAP_BASE_DN: dc=cetcxl,dc=com
+            LDAP_CONFIG_PASSWORD: P@ssw0rd
             LDAP_ADMIN_PASSWORD: P@ssw0rd
             LDAP_REPLICATION: "true"
-            LDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
+            LDAP_REPLICATION_HOST: "['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
+            #LDAP_REPLICATION_HOST: #PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']
+            #LDAP_REPLICATION_CONFIG_SYNCPROV: binddn='cn=admin,cn=config' bindmethod=simple credentials=P@ssw0rd searchbase='cn=config' type=refreshAndPersist retry='60 +' timeout=3 starttls=critical
+            #LDAP_REPLICATION_DB_SYNCPROV: binddn='cn=admin,dc=cetcxl,dc=com' bindmethod=simple credentials=P@ssw0rd searchbase='dc=cetcxl,dc=com' type=refreshAndPersist interval=00:00:00:10 retry='60 +' timeout=3 starttls=critical
 
         volumes:
             - data0:/var/lib/ldap
@@ -68,10 +73,14 @@ services:
         environment:
             LDAP_ORGANISATION: xinlian
             LDAP_DOMAIN: cetcxl.com
+            LDAP_BASE_DN: dc=cetcxl,dc=com
+            LDAP_CONFIG_PASSWORD: P@ssw0rd
             LDAP_ADMIN_PASSWORD: P@ssw0rd
             LDAP_REPLICATION: "true"
-            LDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
-
+            LDAP_REPLICATION_HOST: "['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
+            #LDAP_REPLICATION_HOST: #PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']
+            #LDAP_REPLICATION_CONFIG_SYNCPROV: binddn='cn=admin,cn=config' bindmethod=simple credentials=P@ssw0rd searchbase='cn=config' type=refreshAndPersist retry='60 +' timeout=3 starttls=critical
+            #LDAP_REPLICATION_DB_SYNCPROV: binddn='cn=admin,dc=cetcxl,dc=com' bindmethod=simple credentials=P@ssw0rd searchbase='dc=cetcxl,dc=com' type=refreshAndPersist interval=00:00:00:10 retry='60 +' timeout=3 starttls=critical
         volumes:
             - data1:/var/lib/ldap
             - config1:/etc/ldap/slapd.d
@@ -92,10 +101,14 @@ services:
         environment:
             LDAP_ORGANISATION: xinlian
             LDAP_DOMAIN: cetcxl.com
+            LDAP_BASE_DN: dc=cetcxl,dc=com
+            LDAP_CONFIG_PASSWORD: P@ssw0rd
             LDAP_ADMIN_PASSWORD: P@ssw0rd
             LDAP_REPLICATION: "true"
-            LDAP_REPLICATION_HOSTS: "#PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
-
+            LDAP_REPLICATION_HOST: "['ldap://openldap0','ldap://openldap1','ldap://openldap2']"
+            #LDAP_REPLICATION_HOST: #PYTHON2BASH:['ldap://openldap0','ldap://openldap1','ldap://openldap2']
+            #LDAP_REPLICATION_CONFIG_SYNCPROV: binddn='cn=admin,cn=config' bindmethod=simple credentials=P@ssw0rd searchbase='cn=config' type=refreshAndPersist retry='60 +' timeout=3 starttls=critical
+            #LDAP_REPLICATION_DB_SYNCPROV: binddn='cn=admin,dc=cetcxl,dc=com' bindmethod=simple credentials=P@ssw0rd searchbase='dc=cetcxl,dc=com' type=refreshAndPersist interval=00:00:00:10 retry='60 +' timeout=3 starttls=critical
         volumes:
             - data2:/var/lib/ldap
             - config2:/etc/ldap/slapd.d
