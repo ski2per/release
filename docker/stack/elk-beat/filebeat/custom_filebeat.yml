@@ -1,8 +1,49 @@
 filebeat.inputs:
-- type: log
-  enabled: true
-  paths:
-    - /var/log/nginx/*.log
+#- type: log
+#  enabled: false
+#  paths:
+#    - /var/log/*.log
 
+- type: docker
+  containers:
+    path: "/usr/share/filebeat/dockerlogs"
+    ids:
+      - "*"
+  fields:
+    docker: true
+  encoding: utf-8
+  json.keys_under_root: true
+  #json.message_key: log
+  json.overwrite_keys: true  
+
+
+processors:
+#- add_docker_metadata:
+#    hosts: "unix:///var/run/docker.sock"
+- decode_json_fields:
+    fields: ["log"]
+
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+  # Set to true to enable config reloading
+  reload.enabled: false
+
+
+
+#================ Elasticsearch settings ================
 output.elasticsearch:
-  hosts: ["172.16.100.105:9200"]
+  hosts: ["172.16.10.10:9200"]
+  index: "filebeat-%{[beat.version]}-%{+yyyy.MM.dd}"
+
+setup.template.name: "filebeat"
+setup.template.pattern: "filebeat-*"
+setup.template.fileds: "fields.yml"
+setup.template.settings:
+  index.number_of_shards: 3
+
+#================ Kibana settings ================
+setup.kibana:
+  host: "172.16.10.10:5601"
+
+

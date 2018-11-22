@@ -1,7 +1,21 @@
-version: '3'
+version: '3.5'
+
+volumes:
+  filebeat_data:
 
 services:
   filebeat:
-    image: docker.elastic.co/beats/filebeat:6.5.1 
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: filebeat:latest
+    #image: docker.elastic.co/beats/filebeat:6.5.1
     volumes:
-      - ./custom_filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - "./custom_filebeat.yml:/usr/share/filebeat/filebeat.yml"
+      - "filebeat_data:/usr/share/filebeat/data:rw"
+      - "/var/lib/docker/containers:/usr/share/filebeat/dockerlogs/:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    user: root
+
+
+
