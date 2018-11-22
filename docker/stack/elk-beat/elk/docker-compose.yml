@@ -7,7 +7,7 @@ volumes:
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
     hostname: elasticsearch
     environment:
       - cluster.name=docker-cluster
@@ -28,7 +28,7 @@ services:
       
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.4.3
+    image: docker.elastic.co/kibana/kibana:6.2.4
     volumes:
       - ./custom_kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
