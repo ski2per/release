@@ -4,10 +4,9 @@ volumes:
   esdata:
     driver: local
 
-
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.1
     hostname: elasticsearch
     environment:
       - cluster.name=docker-cluster
@@ -29,7 +28,7 @@ services:
       
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.2.4
+    image: docker.elastic.co/kibana/kibana:6.5.1
     volumes:
       - ./custom_kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
