@@ -6,22 +6,21 @@ filebeat.inputs:
 
 - type: docker
   containers:
-    path: "/usr/share/filebeat/dockerlogs"
     ids:
       - "*"
-  fields:
-    docker: true
+    path: "/usr/share/filebeat/dockerlogs"
+  stream : "stdout"
   encoding: utf-8
-  json.keys_under_root: true
+  #json.keys_under_root: true
   #json.message_key: log
-  json.overwrite_keys: true  
+  #json.overwrite_keys: true  
 
 
 processors:
-#- add_docker_metadata:
-#    hosts: "unix:///var/run/docker.sock"
-- decode_json_fields:
-    fields: ["log"]
+- add_docker_metadata:
+    hosts: "unix:///var/run/docker.sock"
+#- decode_json_fields:
+#    fields: ["log"]
 
 filebeat.config.modules:
   # Glob pattern for configuration loading
