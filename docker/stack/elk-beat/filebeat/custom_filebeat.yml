@@ -30,19 +30,20 @@ filebeat.config.modules:
 
 
 
-#================ Elasticsearch settings ================
-output.elasticsearch:
-  hosts: ["172.16.10.10:9200"]
-  index: "filebeat-%{[beat.version]}-%{+yyyy.MM.dd}"
-
-setup.template.name: "filebeat"
-setup.template.pattern: "filebeat-*"
-setup.template.fileds: "fields.yml"
-setup.template.settings:
-  index.number_of_shards: 3
-
-#================ Kibana settings ================
-setup.kibana:
-  host: "172.16.10.10:5601"
-
-
+#   #================ Elasticsearch settings ================
+#   output.elasticsearch:
+#     hosts: ["172.16.10.10:9200"]
+#     index: "filebeat-%{[beat.version]}-%{+yyyy.MM.dd}"
+#   
+#   setup.template.name: "filebeat"
+#   setup.template.pattern: "filebeat-*"
+#   setup.template.fileds: "fields.yml"
+#   setup.template.settings:
+#     index.number_of_shards: 3
+#   
+#   #================ Kibana settings ================
+#   setup.kibana:
+#     host: "172.16.10.10:5601"
+#================ Logstash settings ================
+output.logstash:
+  hosts: ["172.16.10.10:5044"]
