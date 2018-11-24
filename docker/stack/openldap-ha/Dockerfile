@@ -1,2 +1,2 @@
-FROM haproxy
-COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
+FROM centos:7
+RUN yum -y install openldap-servers openldap-clients
