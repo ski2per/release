@@ -15,11 +15,15 @@ services:
     volumes:
       - "./custom_filebeat.yml:/usr/share/filebeat/filebeat.yml"
       - "filebeat_data:/usr/share/filebeat/data:rw"
-      - "log_vol:/usr/share/filebeat/applogs/:ro"
+      - "log_vol:/usr/share/filebeat/applog/:ro"
       - "/var/run/docker.sock:/var/run/docker.sock"
     user: root
 
   nginx:
+  image: nginx:latest
+  container_name: nginx-app
+  volumes:
+    - "log_vol:/var/log/nginx"
 
 
 
