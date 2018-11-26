@@ -1,0 +1,40 @@
+version: '3.5'
+
+volumes:
+  filebeat_data:
+  #log_vol:
+
+services:
+  filebeat:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    #image: filebeat:latest
+    image: docker.elastic.co/beats/filebeat:6.5.1
+    hostname: SRV-HTTP
+    container_name: filebeat
+    volumes:
+      - "./custom_filebeat.yml:/usr/share/filebeat/filebeat.yml"
+      - "filebeat_data:/usr/share/filebeat/data:rw"
+      #- "log_vol:/usr/share/filebeat/applog/:ro"
+      - "/applog:/usr/share/filebeat/applog/:ro"
+      #- "/var/run/docker.sock:/var/run/docker.sock"
+    user: root
+
+  nginx0:
+    image: nginx:dev
+    container_name: nginx0
+    command: ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
+    ports:
+      - "8080:80"
+    volumes:
+      - "/applog/nginx0:/usr/local/nginx/logs"
+
+  nginx1:
+    image: nginx:dev
+    container_name: nginx1
+    command: ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]
+    ports:
+      - "8081:80"
+    volumes:
+      - "/applog/nginx1:/usr/local/nginx/logs"

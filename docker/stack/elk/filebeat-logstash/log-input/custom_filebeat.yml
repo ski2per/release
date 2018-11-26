@@ -2,11 +2,12 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - /usr/share/filebeat/applog/*.log
+    - /usr/share/filebeat/applog/*/*.log
 
-processors:
-- add_docker_metadata:
-    hosts: "unix:///var/run/docker.sock"
+#processors:
+#- add_docker_metadata:
+#    hosts: "unix:///var/run/docker.sock"
+
 #- decode_json_fields:
 #    fields: ["log"]
 
