@@ -20,10 +20,12 @@ services:
     user: root
 
   nginx:
-  image: nginx:latest
-  container_name: nginx-app
-  volumes:
-    - "log_vol:/var/log/nginx"
+    image: nginx:latest
+    container_name: nginx-app
+    ports:
+      - "8080:80"
+    volumes:
+      - "log_vol:/var/log/nginx"
 
 
 
