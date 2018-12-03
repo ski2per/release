@@ -28,7 +28,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - "/applog/nginx0:/usr/local/nginx/logs"
+      - "/applog:/usr/local/nginx/logs"
 
   nginx1:
     image: nginx:dev
@@ -37,4 +37,4 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - "/applog/nginx1:/usr/local/nginx/logs"
+      - "/applog:/usr/local/nginx/logs"

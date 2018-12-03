@@ -1,8 +1,10 @@
 filebeat.inputs:
 - type: log
   enabled: true
+  recursive_glob.enabled: true
   paths:
-    - /usr/share/filebeat/applog/*/*.log
+    #- /usr/share/filebeat/applog/*/*.log
+    - /usr/share/filebeat/applog/**/*
 
 #processors:
 #- add_docker_metadata:
@@ -19,4 +21,4 @@ filebeat.config.modules:
 
 #================ Logstash settings ================
 output.logstash:
-  hosts: ["172.16.10.10:5044"]
+  hosts: ["LOGSTASH_IP:5044"]
