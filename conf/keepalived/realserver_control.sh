@@ -7,13 +7,13 @@
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin"
 export PATH
 
-VIP=10.0.0.222
+VIP=172.16.200.200
 
 case "$1" in
 on)
     # Add VIP on lo interface 
-    /sbin/ifconfig lo:0 $VIP netmask 255.255.255.255 broadcast $VIP
-    /sbin/route add -host $VIP dev lo:0
+    /sbin/ip addr add "$VIP/32" dev lo
+    /sbin/ip route add "$VIP/32" via $VIP dev lo
 
     # Turn off ARP
     echo "1" >/proc/sys/net/ipv4/conf/lo/arp_ignore
@@ -26,8 +26,8 @@ on)
     echo "RealServer Started"
     ;;
 off)
-    /sbin/ifconfig lo:0 down
-    /sbin/route del $VIP &> /dev/null
+    /sbin/ip addr del "$VIP/32" dev lo
+    /sbin/ip route del "$VIP/32" via $VIP dev lo
     echo "0" >/proc/sys/net/ipv4/conf/lo/arp_ignore
     echo "0" >/proc/sys/net/ipv4/conf/lo/arp_announce
     echo "0" >/proc/sys/net/ipv4/conf/all/arp_ignore
