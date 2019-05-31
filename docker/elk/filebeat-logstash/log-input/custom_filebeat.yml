@@ -1,6 +1,7 @@
 filebeat.inputs:
 - type: log
   enabled: true
+  symlinks: true
   recursive_glob.enabled: true
   paths:
     #- /usr/share/filebeat/applog/*/*.log

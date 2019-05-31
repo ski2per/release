@@ -8,8 +8,8 @@ filebeat.inputs:
   containers:
     ids:
       - "*"
-    path: "/usr/share/filebeat/dockerlogs"
-  stream : "stdout"
+    path: "/var/lib/docker/containers"
+    stream : "stdout"
   encoding: utf-8
   #json.keys_under_root: true
   #json.message_key: log
