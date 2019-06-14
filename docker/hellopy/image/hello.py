@@ -16,7 +16,7 @@ def hello():
         num = "-1"
 
     html = "<h2>Hello {} ~</h2>" \
-            "No. {} greetings from: <b>{}</b>"
+            "No. {} greetings from <b>{}</b>"
     return html.format(os.getenv("WHO", "world"), num, socket.gethostname())
 
 if __name__ == "__main__":
