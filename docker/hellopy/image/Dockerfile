@@ -1,12 +1,13 @@
 FROM python:3.6-slim
 
-WORKDIR /app
-COPY . /app
+WORKDIR /hello
+COPY . /hello
 
 RUN pip install -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements.txt
 
 EXPOSE 80
 
-ENV NAME World
+ENV WHO World
+ENV REDIS_HOST redis
 
-CMD ["python", "app.py"]
+CMD ["python", "hello.py"]
