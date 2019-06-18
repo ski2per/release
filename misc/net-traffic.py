@@ -1,53 +1,50 @@
 #!/usr/bin/env python
-"""
 ###### AUTHOR           Ted
 ###### DESCRIPTION      Return network traffics (RX/TX) of all network
-######                  interface (Use it with "watch" command together)
-###### VERSION          v1.5
-###### UPDATE           2018/03/19
+######                  interface (Use it with "watch" command)
+###### VERSION          v1.6
+###### UPDATE           2019/06/18
 ###### PYTHON VERSION   2&3
-"""
 
 import time
 
 
 def sample():
     traffic = {}
-    net = open("/proc/net/dev", 'r')
+    with open("/proc/net/dev", "r") as net:
 
-    for line in net.readlines():
-        if ":" in line:
-            line = line.strip('\n ')
-            tmp = line.split(':')
-            key = tmp[0]
-            tmp = tmp[1].split()
-            traffic[key] = [tmp[0], tmp[8]]
-    net.close()
+        for line in net.readlines():
+            if ":" in line:
+                line = line.strip('\n ')
+                tmp = line.split(':')
+                key = tmp[0]
+                tmp = tmp[1].split()
+                traffic[key] = [tmp[0], tmp[8]]
     return traffic
 
 
 def format_bandwidth(speed):
     unit = ""
 
-    # < 1024 - bps
-    # 1024 - Kbps
-    # 1048576(1024*1024) - Mbps
-    # 1073741824(1024*1024*1024) - Gbps
+    # < 1024 - Bps
+    # 1024 - KBps
+    # 1048576(1024*1024) - MBps
+    # 1073741824(1024*1024*1024) - GBps
 
     if speed >= 1073741824:
-        speed = '{:.2f}Gbps'.format(speed / 1073741824)
+        speed = '{:.2f}GBps'.format(speed / 1073741824)
         # speed = '{:.2}'.format(str(speed/1073741824))
         return speed + unit
     elif speed >= 1048576:
-        speed = '{:.2f}Mbps'.format(speed / 1048576)
+        speed = '{:.2f}MBps'.format(speed / 1048576)
         # speed = '{:.2}'.format(str(speed/1048576))
         return speed + unit
     elif speed >= 1024:
-        speed = '{:.2f}Kbps'.format(speed / 1024)
+        speed = '{:.2f}KBps'.format(speed / 1024)
         # speed = '{:.2}'.format(str(speed/1024))
         return speed + unit
     else:
-        unit = "bps"
+        unit = "Bps"
         return str(speed) + unit
 
 
