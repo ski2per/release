@@ -15,8 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1538035142967,
+  "iteration": 1567148945711,
   "links": [],
   "panels": [
     {
@@ -106,7 +105,7 @@
             {
               "key": "container_name",
               "operator": "=~",
-              "value": "/^$container$*/"
+              "value": "/^$container$/"
             },
             {
               "condition": "AND",
@@ -119,6 +118,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Memory",
       "tooltip": {
@@ -246,7 +246,7 @@
             {
               "key": "container_name",
               "operator": "=~",
-              "value": "/^$container$*/"
+              "value": "/^$container$/"
             },
             {
               "condition": "AND",
@@ -259,6 +259,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "CPU",
       "tooltip": {
@@ -386,7 +387,7 @@
               "condition": "AND",
               "key": "container_name",
               "operator": "=~",
-              "value": "/^$container$*/"
+              "value": "/^$container$/"
             }
           ]
         },
@@ -442,13 +443,14 @@
               "condition": "AND",
               "key": "container_name",
               "operator": "=~",
-              "value": "/^$container$*/"
+              "value": "/^$container$/"
             }
           ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "File System",
       "tooltip": {
@@ -582,7 +584,7 @@
               "condition": "AND",
               "key": "container_name",
               "operator": "=~",
-              "value": "/^$container$*/"
+              "value": "/^$container$/"
             }
           ]
         },
@@ -644,13 +646,14 @@
               "condition": "AND",
               "key": "container_name",
               "operator": "=~",
-              "value": "/^$container$*/"
+              "value": "/^$container$/"
             }
           ]
         }
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Network",
       "tooltip": {
@@ -692,7 +695,7 @@
   ],
   "refresh": "5s",
   "schemaVersion": 16,
-  "style": "dark",
+  "style": "light",
   "tags": [],
   "templating": {
     "list": [
@@ -703,6 +706,7 @@
           "value": "$__all"
         },
         "datasource": "influx",
+        "definition": "",
         "hide": 0,
         "includeAll": true,
         "label": "Host",
@@ -712,6 +716,7 @@
         "query": "show tag values with key = \"machine\"",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
@@ -722,19 +727,21 @@
       {
         "allValue": null,
         "current": {
-          "text": "metrics_cadvisor_1",
-          "value": "metrics_cadvisor_1"
+          "text": "cadvisor_cadvisor.1.fts72lnqu6nziquxo5kmcg7m5",
+          "value": "cadvisor_cadvisor.1.fts72lnqu6nziquxo5kmcg7m5"
         },
         "datasource": "influx",
+        "definition": "show tag values from memory_usage with key = \"container_name\" where machine =~ /^$host$/ and container_name !~ /^\\//",
         "hide": 0,
         "includeAll": false,
         "label": "Container",
         "multi": false,
         "name": "container",
         "options": [],
-        "query": "show tag values with key = \"container_name\" WHERE machine =~ /^$host$/",
+        "query": "show tag values from memory_usage with key = \"container_name\" where machine =~ /^$host$/ and container_name !~ /^\\//",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
@@ -776,5 +783,5 @@
   "timezone": "browser",
   "title": "monitor",
   "uid": "monitor",
-  "version": 2
+  "version": 1
 }
