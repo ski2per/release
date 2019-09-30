@@ -33,16 +33,16 @@ else
 fi
 
 # Start Cadvisor
-COMPOSE_BIN=$(which docker-compose)
-if [ -x "$COMPOSE_BIN" ];then
-    # Start Docker service if it's stopped
-    docker ps &> /dev/null
-    if [ "$?" -ne 0 ];then
-        systemctl start docker
-    fi
-    docker-compose up -d && echo "Cadvisor started..."
-else
-    echo "Cannot found docker-compose"
-    exit 3
-fi
+#COMPOSE_BIN=$(which docker-compose)
+#if [ -x "$COMPOSE_BIN" ];then
+#    # Start Docker service if it's stopped
+#    docker ps &> /dev/null
+#    if [ "$?" -ne 0 ];then
+#        systemctl start docker
+#    fi
+#    docker-compose up -d && echo "Cadvisor started..."
+#else
+#    echo "Cannot found docker-compose"
+#    exit 3
+#fi
 
