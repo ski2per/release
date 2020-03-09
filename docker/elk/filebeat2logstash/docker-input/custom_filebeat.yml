@@ -9,7 +9,7 @@ filebeat.inputs:
     ids:
       - "*"
     path: "/var/lib/docker/containers"
-    stream : "stdout"
+    stream : "all"
   encoding: utf-8
   #json.keys_under_root: true
   #json.message_key: log
