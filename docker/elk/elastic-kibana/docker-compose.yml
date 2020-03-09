@@ -22,7 +22,7 @@ services:
         hard: 65536
     volumes:
       - esdata:/usr/share/elasticsearch/data
-      - ./custom_elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./customized_elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
       - 9200:9200
       
@@ -30,7 +30,7 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:6.5.1
     volumes:
-      - ./custom_kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ./customized_kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - 5601:5601
 

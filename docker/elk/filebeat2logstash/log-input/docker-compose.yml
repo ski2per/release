@@ -14,7 +14,7 @@ services:
     hostname: SRV-HTTP
     container_name: filebeat
     volumes:
-      - "./custom_filebeat.yml:/usr/share/filebeat/filebeat.yml"
+      - "./customized_filebeat.yml:/usr/share/filebeat/filebeat.yml"
       - "filebeat_data:/usr/share/filebeat/data:rw"
       #- "log_vol:/usr/share/filebeat/applog/:ro"
       - "/applog:/usr/share/filebeat/applog/:ro"

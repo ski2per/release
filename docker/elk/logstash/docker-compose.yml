@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  logstash:
+    image: logstash:6.8.7
+    hostname: logstash
+    volumes:
+      - "./customized_logstash.conf:/usr/share/logstash/pipeline/logstash.conf"
+      - "./customized_logstash.yml:/usr/share/logstash/config/logstash.yml"
+      - "/opt/logstash:/data:rw"
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    environment:
+          - TZ=Asia/Shanghai
