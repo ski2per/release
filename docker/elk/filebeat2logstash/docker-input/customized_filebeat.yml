@@ -15,6 +15,11 @@ filebeat.inputs:
   #json.message_key: log
   #json.overwrite_keys: true  
 
+  # For benchmark test
+  #close_renamed: true
+  #close_removed: true
+  #close_timeout: 5m
+
 
 processors:
 - add_docker_metadata:
