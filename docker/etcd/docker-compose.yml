@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  etcd0:
+    image: etcd:3.3.18
+    #command: ["--name etcd0"]
+      #- --initial-advertise-peer-urls http://etcd0:2380
+      #- --enable-v2=true
+      #- --listen-peer-urls http://etcd0:2380
+      #- --listen-client-urls http://etcd0:2379,http://127.0.0.1:2379
+      #- --advertise-client-urls http://etcd0:2379
+      #- --initial-cluster-token whatthefuck
+      #- --initial-cluster etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380
+      #- --initial-cluster-state new
+    ports:
+      - "2379:2379"
+
+#  etcd1:
+#    image: etcd:3.4.4
+#    command:
+#      - --name etcd1
+#      - --initial-advertise-peer-urls http://etcd1:2380
+#      - --enable-v2=true
+#      - --listen-peer-urls http://etcd1:2380
+#      - --listen-client-urls http://etcd1:2379,http://127.0.0.1:2379
+#      - --advertise-client-urls http://etcd1:2379
+#      - --initial-cluster-token whatthefuck
+#      - --initial-cluster etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380
+#      - --initial-cluster-state new
+#
+#  etcd2:
+#    image: etcd:3.4.4
+#    command:
+#      - --name etcd2
+#      - --initial-advertise-peer-urls http://etcd2:2380
+#      - --enable-v2=true
+#      - --listen-peer-urls http://etcd2:2380
+#      - --listen-client-urls http://etcd2:2379,http://127.0.0.1:2379
+#      - --advertise-client-urls http://etcd2:2379
+#      - --initial-cluster-token whatthefuck
+#      - --initial-cluster etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380
+#      - --initial-cluster-state new
