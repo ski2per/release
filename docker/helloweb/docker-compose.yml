@@ -9,7 +9,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: simpleweb
+    image: helloweb
     environment:
       WHO: World
       REDIS_HOST: redis.service.consul
