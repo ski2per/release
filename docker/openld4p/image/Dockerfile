@@ -23,6 +23,9 @@ RUN tar -zxf ${openldap}.tgz && \
     --enable-overlays \
     --enable-syncprov \
     --enable-memberof \
+    --enable-ppolicy \
+    --enable-deref \
+    --enable-refint \
     --enable-bdb=no \
     --enable-hdb=no && \
     make depend && \
