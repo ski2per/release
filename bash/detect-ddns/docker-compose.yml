@@ -1,0 +1,43 @@
+version: "3.5"
+
+services:
+  flannel:
+    image: flannel:ted
+    hostname: flannel
+    environment:
+      - FLANNELD_ETCD_ENDPOINTS=http://etcd.cetcxl.com:2379
+      - FLANNELD_PUBLIC_IP=182.139.86.87
+      - FLANNELD_IFACE=172.16.66.10
+      - FLANNELD_ETCD_USERNAME=flannel
+      - FLANNELD_ETCD_PASSWORD=flannel
+    volumes:
+      - /run/flannel:/run/flannel:rw
+    cap_add:
+      - NET_ADMIN
+    network_mode: "host"
+    restart: always
+
+  netwatch:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: netwatch:1.1
+    hostname: netwatch
+    environment:
+      - NETWATCH_ETCD_ENDPOINT=http://etcd.cetcxl.com:2379
+      - NETWATCH_ETCD_USERNAME=flannel
+      - NETWATCH_ETCD_PASSWORD=flannel
+      - NETWATCH_DNS_ENDPOINT=http://etcd.cetcxl.com:8500
+      - NETWATCH_DNS_TOKEN=d929f40f-1a74-ea22-1f2b-167932d8a08b
+      - NETWATCH_NETWORK_NAME=wtf
+      - NETWATCH_TAG=hl.com
+      - NETWATCH_LOOP=60
+      - NETWATCH_QUEUE_TIMEOUT=3
+    volumes:
+      - /run/flannel:/run/flannel:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    cap_add:
+      - NET_ADMIN
+    network_mode: "host"
+    restart: always
+
