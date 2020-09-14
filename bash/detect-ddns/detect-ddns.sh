@@ -6,16 +6,17 @@ LOG="$DIR/ddns.log"
 
 OLD_IP=`cat $IP_FILE 2> /dev/null`
 
+function log {
+    msg=$1
+    /bin/date +"[%Y/%m/%d %H:%M:%S]: $msg" >> $LOG 2>&1
+}
+
+
 function determine_new_ip {
     NEW_IP=`/usr/bin/curl -s http://devops.cetcxl.com/devops/ip`
     if [ -z "${NEW_IP// }" ];then
         NEW_IP=`/usr/bin/getent hosts cetcxl.tpddns.cn | awk '{print $1}'`
     fi
-}
-
-function log {
-    msg=$1
-    /bin/date +"[%Y/%m/%d %H:%M:%S]: $msg" >> $LOG
 }
 
 determine_new_ip
