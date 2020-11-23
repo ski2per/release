@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###### CREATOR          Ted       
 ###### DESCRIPTION      Setup openvpn client on CentOS

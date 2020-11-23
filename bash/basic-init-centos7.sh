@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###### FARMER        Ted
 ###### DESCRIPTION   Basic init script for centos 7

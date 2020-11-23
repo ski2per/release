@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###### CREATOR          Ted       
 ###### DESCRIPTION      Setup Jenkins on Ubuntu 16.04

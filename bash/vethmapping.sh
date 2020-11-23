@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 NETNS_DIR="/var/run/netns"
 NL='\n'

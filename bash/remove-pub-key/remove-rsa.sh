@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###### CREATOR          Ted       
 ###### DESCRIPTION      Remove id_rsa.pub in authorized_keys of remote hosts

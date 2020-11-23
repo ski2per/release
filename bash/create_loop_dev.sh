@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ $# -ne 1 ]] || [[ ! -x "/bin/mknod" ]];then
     exit 1
