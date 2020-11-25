@@ -34,7 +34,6 @@ function take_sanpshot {
 function clean_snapshot {
     # $1: dataset name
 
-    echo $KEEP_SNAPSHOT
     for snap in $(zfs list -t snap -H -p -s creation -o name | grep $ZFS_POOL/$1 | head -n -$KEEP_SNAPSHOT);do
         log "[INFO] clean snapshot: $snap"
         zfs destroy $snap
