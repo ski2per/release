@@ -5,11 +5,12 @@ FLAG=0
 function usage {
 	cat <<EOF
 Usage: $(basename "$0") [OPTION]...
-  -t    Tool type: <snapshot|backup>
+  -t    Tool type: <snapshot|backup|clean>
   -p    ZFS pool name
   -d    ZFS dataset name in pool(specified by -p), separated by comma: dataset1,dataset2
   -r    Remote ZFS pool name
   -l    Remote host login account(access through public key: root@172.16.66.66)
+  -k    Number of snapshots to keep(default: 5)
   -h    display help
 
 EOF
@@ -28,6 +29,16 @@ function take_sanpshot {
     now=$(date +"%Y%m%d-%H%M%S")
     log "[take_snapshot] Snapshot: $ZFS_POOL/$1@$now"
     zfs snapshot $ZFS_POOL/$1@$now
+}
+
+function clean_snapshot {
+    # $1: dataset name
+
+    echo $KEEP_SNAPSHOT
+    for snap in $(zfs list -t snap -H -p -s creation -o name | grep $ZFS_POOL/$1 | head -n -$KEEP_SNAPSHOT);do
+        log "[INFO] clean snapshot: $snap"
+        zfs destroy $snap
+    done
 }
 
 function check_backup {
@@ -76,13 +87,12 @@ function send_incremental_snapshot {
 
 }
 
-
 # Parse command line arguments
-while getopts ":t:p:d:r:l:h" opt; do
+while getopts ":t:p:d:r:l:k:h" opt; do
     case "$opt" in
         t)
             TYPE=${OPTARG}
-            (( $TYPE == "snapshot" || $TYPE == "backup" )) || usage
+            ([ "$TYPE" == "snapshot" ] || [ "$TYPE" == "backup" ] || [ "$TYPE" == "clean" ]) || usage
             ;;
         p)
             ZFS_POOL=$OPTARG
@@ -96,18 +106,31 @@ while getopts ":t:p:d:r:l:h" opt; do
         l)
             ZFS_REMOTE_LOGIN=$OPTARG
             ;;
+        k)
+            KEEP_SNAPSHOT=$OPTARG
+            ;;
         h|*)
             usage
             ;;
     esac
 done
+shift $((OPTIND-1))
+
 if [ "$TYPE" == "snapshot" ];then
     if [ -z "${ZFS_POOL}" ] || [ -z "${dataset_list}" ];then
         usage
     fi
-else
+elif [ "$TYPE" == "backup" ];then
     if [ -z "${ZFS_POOL}" ] || [ -z "${dataset_list}" ] || [ -z "${ZFS_REMOTE_POOL}" ] || [ -z "${ZFS_REMOTE_LOGIN}" ]; then
         usage
+    fi
+else
+    if [ -z "${ZFS_POOL}" ] || [ -z "${dataset_list}" ];then
+        usage
+    fi
+
+    if [ -z "${KEEP_SNAPSHOT}" ];then
+        KEEP_SNAPSHOT=5
     fi
 fi
 
@@ -119,12 +142,12 @@ LOG="$DIR/zfs.log"
 HOST=$(hostname)
 
 
-if [ $TYPE == "snapshot" ];then
+if [ "$TYPE" == "snapshot" ];then
     for ds in "${ZFS_DATASETS[@]}"
     do
         take_sanpshot $ds
     done
-else
+elif [ "$TYPE" == "backup" ];then
     for ds in "${ZFS_DATASETS[@]}"
     do
         last_two_snapshots=($(zfs list -t snap -H -p -s creation -o name | grep "$ZFS_POOL/$ds" | tail -2))
@@ -153,9 +176,14 @@ else
         esac
         #send_snapshot $ds
     done
+elif [ "$TYPE" == "clean" ];then
+    for ds in "${ZFS_DATASETS[@]}"
+    do
+        clean_snapshot $ds
+    done
+else
+    usage
 fi
-
-
 
 
 
