@@ -20,7 +20,8 @@ func getServerPort() (string) {
 // EchoHandler echos back the request as a response
 func EchoHandler(writer http.ResponseWriter, request *http.Request) {
 
-    log.Println("Echoing back request made to " + request.URL.Path + " to client (" + request.RemoteAddr + ")")
+    //log.Println("Echoing back request to client " + request.URL.Path + " to client (" + request.RemoteAddr + ")")
+    log.Printf("Echoing back request to client(%s): %s\n", request.RemoteAddr, request.URL.Path)
 
     writer.Header().Set("Access-Control-Allow-Origin", "*")
     writer.Header().Set("Access-Control-Allow-Headers", "Content-Range, Content-Disposition, Content-Type, ETag")
@@ -29,7 +30,7 @@ func EchoHandler(writer http.ResponseWriter, request *http.Request) {
 
 func main() {
 
-    log.Println("starting server, listening on port " + getServerPort())
+    log.Println("Starting server, listening on port " + getServerPort())
 
     http.HandleFunc("/", EchoHandler)
     http.ListenAndServe(":" + getServerPort(), nil)
