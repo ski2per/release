@@ -34,7 +34,7 @@ function check_backup {
     # $1: dataset name
     # $2: latest snapshot
 
-    latest_backup=$(ssh $ZFS_REMOTE_LOGIN zfs list -t snap -H -p -s creation -o name | grep $1 | tail -1)
+    latest_backup=$(ssh $ZFS_REMOTE_LOGIN zfs list -t snap -H -p -s creation -o name | grep "$HOST-$1" | tail -1)
     latest_backup_ts=${latest_backup##*@}
     latest_snapshot_ts=${2##*@}
 
@@ -50,8 +50,7 @@ function send_init_snapshot {
     # $1: dataset name
     # $2: latest snapshot
 
-    host=$(hostname)
-    backup_name="$host-$1"
+    backup_name="$HOST-$1"
 
     log "[send_init_snapshot] Send: $2"
     zfs send $2 | ssh $ZFS_REMOTE_LOGIN zfs recv -F $ZFS_REMOTE_POOL/$backup_name
@@ -65,14 +64,13 @@ function send_incremental_snapshot {
     # $1: dataset name
 
     latest_snapshot=($(zfs list -t snap -H -p -s creation -o name | grep "$ZFS_POOL/$1" | tail -1))
-    latest_backup=$(ssh $ZFS_REMOTE_LOGIN zfs list -t snap -H -p -s creation -o name | grep $1)
+    latest_backup=$(ssh $ZFS_REMOTE_LOGIN zfs list -t snap -H -p -s creation -o name | grep "$HOST-$1")
     if [ -z "$latest_backup" ];then
         log "[INFO] NO BACKUP FOR DATASET($1), send_init_snapshot"
         send_init_snapshot $1 $latest_snapshot
     else
         log "[send_incremental_snapshot] Send: $ZFS_POOL/$1@$latest_backup_ts -> $latest_snapshot"
-        host=$(hostname)
-        backup_name="$host-$1"
+        backup_name="$HOST-$1"
         zfs send -i $ZFS_POOL/$1@$latest_backup_ts $latest_snapshot | ssh $ZFS_REMOTE_LOGIN zfs recv -F $ZFS_REMOTE_POOL/$backup_name
     fi
 
@@ -118,6 +116,7 @@ set -f
 ZFS_DATASETS=(${dataset_list//,/ })
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 LOG="$DIR/zfs.log"
+HOST=$(hostname)
 
 
 if [ $TYPE == "snapshot" ];then
