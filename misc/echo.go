@@ -6,7 +6,7 @@ import (
     "log"
 )
 
-const DefaultPort = "6666";
+const DefaultPort = "10086";
 
 func getServerPort() (string) {
     port := os.Getenv("SERVER_PORT");
