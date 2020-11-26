@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Crontab template
+# BSI ZFS snapshot/backup
+#0 */1 * * * /opt/devops/zfs/zfs-tool.sh -t snapshot -p bsi-store -d prod
+#10 */4 * * * /opt/devops/zfs/zfs-tool.sh -t backup -p bsi-store -d prod -r prodbackup -l root@192.168.99.5
+#40 23 * * * /opt/devops/zfs/zfs-tool.sh -t clean -p bsi-store -d prod
+
 FLAG=0
 
 function usage {
